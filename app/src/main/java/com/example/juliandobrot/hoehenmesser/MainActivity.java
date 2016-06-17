@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if (view.getId() == R.id.addButton){
 
-            hPa = hPa + 10;
+            hPa = hPa + 1;
         }
         else if(view.getId() == R.id.subButton){
 
-            hPa = hPa - 10;
+            hPa = hPa - 1;
         }
 
     }
