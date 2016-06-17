@@ -1,6 +1,7 @@
 package com.example.juliandobrot.hoehenmesser;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This class handles the App lifecycle of the Barometric Altimeter.
@@ -22,10 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private SensorManager mSensorManager;
     private Sensor mSensorPressure;
-    private double hPa = 1015;
-
-
-
+    private double hPa;
 
 
     @Override
@@ -42,7 +42,43 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorPressure = mSensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         mSensorManager.registerListener(this, mSensorPressure, SensorManager.SENSOR_DELAY_NORMAL);
 
+        hPa = getHPa();
+
+        if(hPa <= 0){
+            hPa = 1015;
+            saveHPa(hPa);
+        }
     }
+
+    /**
+     * Saves the hPa in the config preference.
+     * @param hPa double hPa
+     */
+    private void saveHPa(double hPa){
+
+        if(hPa < 0) throw new IllegalArgumentException("hPa can't be lower than zero!");
+
+        SharedPreferences.Editor config = getSharedPreferences("config", MODE_PRIVATE).edit();
+        config.clear();
+        config.putString( "hPa", String.valueOf(hPa));
+        config.apply();
+    }
+
+    /**
+     * Gets the hPa from the config preference.
+     * @return double hPa, retruns 0.0 if no entry found.
+     */
+    private double getHPa(){
+        SharedPreferences config = getSharedPreferences("config", MODE_PRIVATE);
+        String str = config.getString("hPa", "");
+        if(str.isEmpty()){
+            return 0.0;
+        }
+
+        return Double.valueOf(str);
+    }
+
+
 
     /**
      * This method hanldles the button events from the xml methid calls.
@@ -60,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             hPa = hPa - 1;
         }
 
+        saveHPa(hPa);
     }
 
 
@@ -107,10 +144,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             TextView meterText = (TextView) findViewById(R.id.meterValue);
             meterText.setText(String.format("%.0f m" , height));
-
         }
-
-
     }
 
     /**
@@ -122,16 +156,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container,
-                    false);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
     }
-
-
-
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

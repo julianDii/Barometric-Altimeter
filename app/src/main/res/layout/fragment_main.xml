@@ -25,7 +25,7 @@
         android:id="@+id/meterValue"
         android:layout_marginTop="52dp"
         android:textSize="30dp"
-        android:text="höhe"
+        android:text="0.0 m"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView"
         android:layout_marginLeft="30dp"
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="0.0 hPa"
         android:id="@+id/pressure"
         android:textSize="30dp"
         android:layout_alignTop="@+id/textView"
@@ -71,19 +71,15 @@
         android:inputType="text" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:text="+"
-        android:id="@+id/addButton"
-        android:layout_below="@+id/pressure"
-        android:layout_alignLeft="@+id/pressure"
-        android:layout_alignStart="@+id/pressure"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:onClick="onButtonClick"
-        android:layout_alignRight="@+id/pressure"
-        android:layout_alignEnd="@+id/pressure" />
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="+"
+            android:id="@+id/addButton"
+            android:padding="5dp"
+            android:onClick="onButtonClick"
+            android:layout_below="@+id/pressure" android:layout_alignRight="@+id/pressure"
+            android:layout_alignEnd="@+id/pressure" android:layout_alignBottom="@+id/subButton"/>
 
     <Button
         android:layout_width="50dp"
@@ -93,10 +89,7 @@
         android:padding="5dp"
         android:nestedScrollingEnabled="false"
         android:onClick="onButtonClick"
-        android:layout_below="@+id/addButton"
-        android:layout_alignLeft="@+id/addButton"
-        android:layout_alignStart="@+id/addButton"
-        android:layout_alignRight="@+id/addButton"
-        android:layout_alignEnd="@+id/addButton" />
+        android:layout_below="@+id/pressure" android:layout_alignLeft="@+id/pressure"
+        android:layout_alignStart="@+id/pressure"/>
 
 </RelativeLayout>
